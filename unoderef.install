@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implements hook_field_schema().
+ */
+function unoderef_field_schema($field) {
+  $columns = [
+    'nid' => [
+      'type'     => 'int',
+      'size'     => 'big',
+      'not null' => FALSE,
+    ],
+  ];
+
+  return [
+    'columns'      => $columns,
+    'indexes'      => [
+      'nod' => ['nid'],
+    ],
+    'foreign keys' => [
+      'format' => [
+        'table'   => 'node',
+        'columns' => ['nid' => 'nid'],
+      ],
+    ],
+  ];
+}

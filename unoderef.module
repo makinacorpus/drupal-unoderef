@@ -1,0 +1,46 @@
+<?php
+
+require_once 'unoderef.widget.inc';
+require_once 'unoderef.formatter.inc';
+require_once 'unoderef.element.inc';
+
+/**
+ * Implements hook_field_info().
+ */
+function unoderef_field_info() {
+  return [
+    'unoderef' => [
+      'label'             => t('Node reference (µNoderef)'),
+      'description'       => t('This field stores node references in the database.'),
+      'settings'          => [],
+      'instance_settings' => ['bundle' => []],
+      'default_widget'    => 'unoderef',
+      'default_formatter' => 'unoderef',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_library().
+ */
+function unoderef_library() {
+  $libraries['unoderef'] = [
+    'title'        => 'µNode Reference',
+    'version'      => '0.1',
+    'js'           => [
+      drupal_get_path('module', 'unoderef') . '/unoderef.js' => [],
+    ],
+    'css'          => [
+      drupal_get_path('module', 'unoderef') . '/unoderef.css' => [
+        'type'  => 'file',
+        'media' => 'screen',
+      ],
+    ],
+    'dependencies' => [
+      ['system', 'jquery.once'],
+      ['system', 'ui.sortable'],
+      ['system', 'ui.droppable'],
+    ],
+  ];
+  return $libraries;
+}
