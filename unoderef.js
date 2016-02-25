@@ -4,7 +4,6 @@
       $(".unoderef-items", context).once().each(function () {
         var $list = $(this);
         var $hidden = $(this).siblings('input[type=hidden]');
-        var allowedBundles = $list.data('allowed-bundles').split(',');
 
         // Handle browser refresh, if no items are displayed and hidden field is
         // not empty, search for items in page or empty hidden field.
@@ -28,38 +27,91 @@
           $hidden.val(order.join(','));
         };
 
-        $list.droppable({
-          activeClass: "ui-state-default",
-          accept: function($item) {
-            // Prevent duplicates and wrong bundles.
-            var nid = $item.data('nid');
-            return !!nid && $.inArray(String(nid), $hidden.val().split(',')) == -1 && $.inArray($item.data('bundle'), allowedBundles) > -1;
-          },
-          drop: function (event, ui) {
-            // Replace item if not multiple
-            if (!$list.data('multiple')) {
-              $list.children().remove()
-            }
-            var $newElement = $(ui.draggable).clone().attr('class', '').addClass('unoderef-item');
-            $('<span class="glyphicon glyphicon-remove"></span>').appendTo($newElement);
-            $newElement.appendTo(this);
-            sortItems();
-          }
-        }).sortable({
-          items: "div[data-nid]",
-          sort: function () {
-            $list.removeClass("ui-state-default");
-          },
-          update: function () {
-            sortItems();
-          }
-        });
+        /**
+         * Return true if the item dropped is part of allowed bundles
+         * @param item
+         * @returns {boolean}
+         */
+        function canDropItem(item) {
+          var $item = $(item);
+          var newVar = !$item.hasClass('ui-draggable') || $.inArray(String($item.data('nid')), $hidden.val().split(',')) == -1;
+          console.log(newVar, item);
+          return newVar;
+        }
 
-        $(document).on('click', '.unoderef-item > span', function(){
+        // Removal of an item
+        $(document).on('click', '.unoderef-item > span', function () {
           $(this).parent().remove();
           sortItems();
-        })
-      })
+        });
+
+        if ($list.data('multiple')) {
+          // Multiple = sortable
+          var toBeRemoved = null;
+          $list.sortable({
+            items: "div[data-nid]",
+            tolerance: "pointer",
+            activate: function () {
+              $list.addClass("unoderef-allow-drop");
+            },
+            deactivate: function () {
+              $list.removeClass("unoderef-allow-drop");
+            },
+            over: function (event, ui) {
+              $(ui.helper).addClass('unoderef-item');
+            },
+            update: function (event, ui) {
+              $(ui.item).attr('class', '').addClass('unoderef-item');
+              if (toBeRemoved) {
+                $list.find('[data-nid=' + toBeRemoved + ']:gt(0)').remove();
+                toBeRemoved = null;
+              }
+              sortItems();
+            },
+            receive: function (event, ui) {
+              // Item here is the original, do not remove, see update.
+              if (!canDropItem(ui.item)) {
+                ui.sender.draggable("cancel");
+                toBeRemoved = $(ui.item).data('nid');
+                return false;
+              }
+            }
+          });
+        }
+        else {
+          // Single = droppable
+          var allowedBundles = $list.data('allowed-bundles').split(',');
+          $list.droppable({
+            activeClass: "unoderef-allow-drop",
+            hoverClass: "unoderef-hover",
+            accept: function ($item) {
+              // Prevent wrong bundles.
+              return $.inArray($item.data('bundle'), allowedBundles) > -1;
+            },
+            drop: function (event, ui) {
+              // Replace item
+              $list.children().remove();
+              var $newElement = $(ui.draggable).clone().attr('class', '').addClass('unoderef-item');
+              $('<span class="glyphicon glyphicon-remove"></span>').appendTo($newElement);
+              $newElement.appendTo(this);
+              sortItems();
+            }
+          });
+        }
+      });
+
+      // Activate draggables to work with correspondign sortables.
+      $(document).on('dragcreate', '[data-nid][data-bundle]', function () {
+        var $item = $(this);
+        // Prevent wrong bundles.
+        var ids = [];
+        $(".unoderef-items[data-multiple]", context).each(function () {
+          if ($.inArray($item.data('bundle'), $(this).data('allowed-bundles').split(',')) > -1) {
+            ids.push('#' + $(this).attr('id'));
+          }
+        });
+        $(this).draggable('option', 'connectToSortable', ids.join(','));
+      });
     }
   };
 }(jQuery));
