@@ -62,6 +62,7 @@
             },
             update: function (event, ui) {
               $(ui.item).attr('class', '').addClass('unoderef-item');
+              $('<span class="glyphicon glyphicon-remove"></span>').appendTo($(ui.item));
               if (toBeRemoved) {
                 $list.find('[data-nid=' + toBeRemoved + ']:gt(0)').remove();
                 toBeRemoved = null;
