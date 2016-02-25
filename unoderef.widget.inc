@@ -39,22 +39,29 @@ function unoderef_field_widget_settings_form($field, $instance) {
     '#multiple'      => TRUE,
   ];
 
-  // View mode to render this field.
+  $form['view_mode'] = [
+    '#type'          => 'select',
+    '#title'         => t('View mode for items'),
+    '#default_value' => $settings['view_mode'],
+    '#options'       => _unodered_view_mode_options(),
+    '#required'      => TRUE,
+  ];
+
+  return $form;
+}
+
+/**
+ * View mode to render this field.
+ *
+ * @return array
+ */
+function _unodered_view_mode_options() {
   $view_modes = [];
   $entity_info = entity_get_info('node');
   foreach ($entity_info['view modes'] as $view_mode => $view_mode_info) {
     $view_modes[$view_mode] = $view_mode_info['label'];
   }
-
-  $form['view_mode'] = [
-    '#type'          => 'select',
-    '#title'         => t('View mode for items'),
-    '#default_value' => $settings['view_mode'],
-    '#options'       => $view_modes,
-    '#required'      => TRUE,
-  ];
-
-  return $form;
+  return $view_modes;
 }
 
 /**

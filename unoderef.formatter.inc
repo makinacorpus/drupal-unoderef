@@ -20,13 +20,13 @@ function unoderef_field_formatter_settings_form($field, $instance, $view_mode, $
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
 
-  $view_modes = field_view_mode_settings('node', $field['bundle']);
+  $element = [];
   $element['view_mode'] = [
     '#title'         => t('View mode'),
     '#type'          => 'select',
     '#default_value' => $settings['view_mode'],
     '#required'      => TRUE,
-    '#options'       => $view_modes,
+    '#options'       => _unodered_view_mode_options(),
   ];
 
   return $element;
@@ -39,9 +39,8 @@ function unoderef_field_formatter_settings_summary($field, $instance, $view_mode
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
 
-  $summary = t('Length: @chars chars', ['@chars' => $settings['view_mode']]);
-
-  return $summary;
+  $view_modes = _unodered_view_mode_options();
+  return t('View mode: @view_mode', ['@view_mode' => $view_modes[$settings['view_mode']]]);
 }
 
 /**
