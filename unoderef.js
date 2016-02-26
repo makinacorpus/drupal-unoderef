@@ -84,7 +84,7 @@
           var allowedBundles = $list.data('allowed-bundles').split(',');
           $list.droppable({
             activeClass: "unoderef-allow-drop",
-            hoverClass: "unoderef-hover",
+            tolerance: "pointer",
             accept: function ($item) {
               // Prevent wrong bundles.
               return $.inArray($item.data('bundle'), allowedBundles) > -1;

@@ -3,7 +3,7 @@
   border-radius: 5px;
   padding: .5em;
   width: 100%;
-  min-height: 2em;
+  min-height: 138px;
   transition: all .5s ease;
 }
 .unoderef-items .ui-sortable-placeholder {
@@ -16,9 +16,6 @@
 .unoderef-allow-drop {
   border: 2px dashed #018fe2;
   background: rgba(1, 143, 226, .2);
-}
-.unoderef-hover {
-  min-height: 120px;
 }
 
 .unoderef-item {
