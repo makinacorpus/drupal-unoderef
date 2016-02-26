@@ -24,7 +24,6 @@
 .unoderef-item {
   width: 120px !important;
   height: 120px !important;
-  border-radius: 4px;
   float: left;
   position: relative;
 }
@@ -35,6 +34,7 @@
   position: relative;
   padding-left: 0;
   padding-right: 0;
+  border-radius: 6px;
 }
 
 .unoderef-item > span {
