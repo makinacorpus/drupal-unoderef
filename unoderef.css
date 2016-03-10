@@ -12,6 +12,11 @@
   height: 120px;
   float: left;
 }
+.unoderef-items:empty:after {
+  content: attr(data-help-text);
+  color: #999;
+  line-height: 120px;
+}
 
 .unoderef-allow-drop {
   border: 2px dashed #018fe2;

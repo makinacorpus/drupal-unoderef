@@ -52,8 +52,9 @@ function unoderef_element_process($element) {
   $element['items'] = [
     '#type'       => 'container',
     '#attributes' => [
-      'class'                => ['unoderef-items clearfix'],
+      'class'                => ['unoderef-items'],
       'data-allowed-bundles' => implode(',', $element['#allowed_bundles']),
+      'data-help-text'       => t("Drag and drop media from your cart here."),
     ],
   ];
   if (count($values)) {
