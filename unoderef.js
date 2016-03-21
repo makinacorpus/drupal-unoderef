@@ -13,7 +13,9 @@
           $.each($hidden.val().split(','), function (nid) {
             $('[data-nid=' + nid + ']').clone().attr('class', '').addClass('unoderef-item').appendTo($list);
           });
-          if (!found) $hidden.val('');
+          if (!found) {
+            $hidden.val('');
+          }
         }
 
         /**
@@ -22,7 +24,7 @@
         var sortItems = function sortHidden() {
           var order = [];
           $list.find('.unoderef-item').each(function () {
-            order.push($(this).data('nid'))
+            order.push($(this).data('nid'));
           });
           $hidden.val(order.join(','));
         };
@@ -34,7 +36,7 @@
          */
         function canDropItem(item) {
           var $item = $(item);
-          var newVar = !$item.hasClass('ui-draggable') || $.inArray(String($item.data('nid')), $hidden.val().split(',')) == -1;
+          var newVar = $.inArray(String($item.data('nid')), $hidden.val().split(',')) === -1;
           console.log(newVar, item);
           return newVar;
         }
@@ -92,26 +94,16 @@
             drop: function (event, ui) {
               // Replace item
               $list.children().remove();
-              var $newElement = $(ui.draggable).clone().attr('class', '').addClass('unoderef-item');
+              var $newElement = $(ui.draggable).clone()
+                .attr('class', '')
+                .addClass('unoderef-item')
+                .removeAttr('style');
               $('<span class="glyphicon glyphicon-remove"></span>').appendTo($newElement);
               $newElement.appendTo(this);
               sortItems();
             }
           });
         }
-      });
-
-      // Activate draggables to work with correspondign sortables.
-      $(document).on('dragcreate', '[data-nid][data-bundle]', function () {
-        var $item = $(this);
-        // Prevent wrong bundles.
-        var ids = [];
-        $(".unoderef-items[data-multiple]", context).each(function () {
-          if ($.inArray($item.data('bundle'), $(this).data('allowed-bundles').split(',')) > -1) {
-            ids.push('#' + $(this).attr('id'));
-          }
-        });
-        $(this).draggable('option', 'connectToSortable', ids.join(','));
       });
     }
   };
