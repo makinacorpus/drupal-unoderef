@@ -9,6 +9,9 @@ function unoderef_field_formatter_info() {
     'unoderef' => [
       'label'       => t('Default'),
       'field types' => ['unoderef'],
+      'settings'    => [
+        'view_mode' => 'teaser',
+      ],
     ],
   ];
 }
@@ -49,7 +52,7 @@ function unoderef_field_formatter_settings_summary($field, $instance, $view_mode
 function unoderef_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = [];
   $settings = $display['settings'];
-  $view_mode = isset($settings['view_mode']) ? $settings['view_mode'] : 'teaser';
+  $view_mode = $settings['view_mode'];
 
   // Collect items to display
   $nids = [];
