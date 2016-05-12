@@ -36,9 +36,7 @@
          */
         function canDropItem(item) {
           var $item = $(item);
-          var newVar = $.inArray(String($item.data('nid')), $hidden.val().split(',')) === -1;
-          console.log(newVar, item);
-          return newVar;
+          return $.inArray(String($item.data('nid')), $hidden.val().split(',')) === -1;
         }
 
         // Removal of an item
@@ -63,9 +61,8 @@
               $(ui.helper).addClass('unoderef-item');
             },
             update: function (event, ui) {
-              $(ui.item).attr('class', '').addClass('unoderef-item');
-              $('<span class="glyphicon glyphicon-remove"></span>').appendTo($(ui.item));
               if (toBeRemoved) {
+                console.log('removing');
                 $list.find('[data-nid=' + toBeRemoved + ']:gt(0)').remove();
                 toBeRemoved = null;
               }
@@ -76,8 +73,13 @@
               if (!canDropItem(ui.item)) {
                 ui.sender.draggable("cancel");
                 toBeRemoved = $(ui.item).data('nid');
+                console.log('canceling');
                 return false;
               }
+              $(ui.item).removeClass('unoderef-item');
+              var elem = $(ui.item).clone().attr('class', '').addClass('unoderef-item');
+              $('<span class="glyphicon glyphicon-remove"></span>').appendTo(elem);
+              $(elem).appendTo($list);
             }
           });
         }

@@ -6,7 +6,7 @@
   min-height: 138px;
   transition: all .5s ease;
 }
-.unoderef-items .ui-sortable-placeholder {
+.unoderef-items .ucms-placeholder {
   visibility: visible !important;
   width: 120px;
   height: 120px;

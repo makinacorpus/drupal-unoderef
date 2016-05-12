@@ -55,6 +55,7 @@ function unoderef_element_process($element) {
       'class'                => ['unoderef-items'],
       'data-allowed-bundles' => implode(',', $element['#allowed_bundles']),
       'data-help-text'       => t("Drag and drop media from your cart here."),
+      'data-can-receive'     => 1,
     ],
   ];
   if (count($values)) {
