@@ -61,22 +61,16 @@
               $(ui.helper).addClass('unoderef-item');
             },
             update: function (event, ui) {
-              if (toBeRemoved) {
-                console.log('removing');
-                $list.find('[data-nid=' + toBeRemoved + ']:gt(0)').remove();
-                toBeRemoved = null;
-              }
               sortItems();
             },
             receive: function (event, ui) {
               // Item here is the original, do not remove, see update.
+              $(ui.item).removeClass('unoderef-item');
               if (!canDropItem(ui.item)) {
-                ui.sender.draggable("cancel");
+                $list.sortable("cancel");
                 toBeRemoved = $(ui.item).data('nid');
-                console.log('canceling');
                 return false;
               }
-              $(ui.item).removeClass('unoderef-item');
               var elem = $(ui.item).clone().attr('class', '').addClass('unoderef-item');
               $('<span class="glyphicon glyphicon-remove"></span>').appendTo(elem);
               $(elem).appendTo($list);
