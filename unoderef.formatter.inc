@@ -13,6 +13,13 @@ function unoderef_field_formatter_info() {
         'view_mode' => 'teaser',
       ],
     ],
+    'unoderef_first' => [
+      'label'       => t('Default'),
+      'field types' => ['unoderef'],
+      'settings'    => [
+        'view_mode' => 'teaser',
+      ],
+    ],
   ];
 }
 
@@ -54,18 +61,31 @@ function unoderef_field_formatter_view($entity_type, $entity, $field, $instance,
   $settings = $display['settings'];
   $view_mode = $settings['view_mode'];
 
-  // Collect items to display
-  $nids = [];
-  foreach ($items as $item) {
-    $nids[] = $item['nid'];
-  }
-  if (count($nids)) {
-    $nodes = node_load_multiple($nids);
-    $views = node_view_multiple($nodes, $view_mode);
+  switch ($display['type']) {
 
-    foreach ($nids as $delta => $nid) {
-      $element[$delta] = $views['nodes'][$nid];
-    }
+    case 'unoderef':
+      // Collect items to display
+      $nids = [];
+      foreach ($items as $item) {
+        $nids[] = $item['nid'];
+      }
+      if (count($nids)) {
+        $nodes = node_load_multiple($nids);
+        $views = node_view_multiple($nodes, $view_mode);
+        foreach ($nids as $delta => $nid) {
+          $element[$delta] = $views['nodes'][$nid];
+        }
+      }
+      break;
+
+    case 'unoderef_first':
+      // Collect items to display
+      if (isset($items[0]['nid'])) {
+        if ($node = node_load($items[0]['nid'])) {
+          $element[0] = node_view($node, $view_mode);
+        }
+      }
+      break;
   }
 
   return $element;
