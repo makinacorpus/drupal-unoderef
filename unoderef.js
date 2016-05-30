@@ -40,7 +40,7 @@
         }
 
         // Removal of an item
-        $(document).on('click', '.unoderef-item > span', function () {
+        $(document).on('mousedown', '.unoderef-item > span', function () {
           $(this).parent().remove();
           sortItems();
         });
