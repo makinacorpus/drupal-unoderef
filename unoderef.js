@@ -36,7 +36,8 @@
          */
         function canDropItem(item) {
           var $item = $(item);
-          return $.inArray(String($item.data('nid')), $hidden.val().split(',')) === -1;
+          var allowedBundles = $list.data('allowed-bundles').split(',');
+          return $.inArray(String($item.data('nid')), $hidden.val().split(',')) === -1 && $.inArray($item.data('bundle'), allowedBundles) > -1;
         }
 
         // Removal of an item
@@ -59,6 +60,9 @@
             },
             over: function (event, ui) {
               $(ui.helper).addClass('unoderef-item');
+            },
+            out: function (event, ui) {
+              $(ui.helper).removeClass('unoderef-item');
             },
             update: function (event, ui) {
               sortItems();
