@@ -119,21 +119,27 @@ function unoderef_field_validate($entity_type, $entity, $field, $instance, $lang
 
   // Verify node exist.
   if (count($nodes) != count($nids)) {
-    $errors[$field['field_name']][$langcode][] = [
+    $errors[$field['field_name']][$langcode][0][] = [
       'error'   => 'unoderef_non_existent_nodes',
       'message' => t('There is content no longer available.'),
     ];
   }
+  else {
+    // Verify bundles are correct.
+    foreach ($items as $delta => $item) {
+      if (empty($item['nid']) || !isset($nodes[$item['nid']])) {
+        continue;
+      }
+      $node = $nodes[$item['nid']];
 
-  // Verify bundles are correct.
-  foreach ($nodes as $node) {
-    if (!in_array($node->type, $instance['widget']['settings']['bundles'])) {
-      $errors[$field['field_name']][$langcode][] = [
-        'error'   => 'unoderef_wrong_bundle',
-        'message' => t("%name: this node's type is not allowed here.", [
-          '%name' => entity_label('node', $node),
-        ]),
-      ];
+      if (!in_array($node->type, $instance['widget']['settings']['bundles'])) {
+        $errors[$field['field_name']][$langcode][$delta][] = [
+            'error'   => 'unoderef_wrong_bundle',
+            'message' => t("%name: this node's type is not allowed here.", [
+                '%name' => entity_label('node', $node),
+            ]),
+        ];
+      }
     }
   }
 }
