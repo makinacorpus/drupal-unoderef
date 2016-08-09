@@ -6,6 +6,12 @@
   min-height: 138px;
   transition: all .5s ease;
 }
+.unoderef-items:before,
+.unoderef-items:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
 .unoderef-items .ucms-placeholder {
   visibility: visible !important;
   width: 120px;
