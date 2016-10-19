@@ -1,0 +1,56 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.8.6\n"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.element.inc:57
+msgid "Drag and drop media from your cart here."
+msgstr "Glisser-déposer des médias depuis le panier ici."
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.element.inc:124
+msgid "There is content no longer available."
+msgstr "Il y a du contenu référencé devenu indisponible."
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.element.inc:138
+msgid "%name: this node's type is not allowed here."
+msgstr "%name : ce type de contenu n'est pas autorisé ici."
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.formatter.inc:35
+msgid "View mode"
+msgstr "Mode d'affichage"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.formatter.inc:53
+msgid "View mode: @view_mode"
+msgstr "Mode d'affichage : @view_mode"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.formatter.inc:10;17
+msgid "Default"
+msgstr "Par défaut"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.module:13
+msgid "Node reference (Noderef)"
+msgstr "Node reference (Noderef)"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.module:14
+msgid "This field stores node references in the database."
+msgstr "Ce champ stocke des références de nœud dans la base de données."
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.widget.inc:10
+msgid "Node Reference drop area"
+msgstr "Zone de dépôt Node Reference"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.widget.inc:35
+msgid "Allowed bundles"
+msgstr "Bundles autorisés"
+
+#: sites/all/modules/composer/drupal-unoderef/unoderef.widget.inc:44
+msgid "View mode for items"
+msgstr "Mode d'affichage pour les éléments"
