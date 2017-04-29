@@ -1,2 +1,3 @@
 name = µNodeReference
 core = 7.x
+dependencies[] = dragula
