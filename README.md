@@ -51,7 +51,3 @@ For example:
 There is nothing else to do, the JavaScript code will automatically find all
 content sources that matches those conditions, and use it for drag and drop.
 
-## Use with jQuery sortable/droppable
-
-This is not supported anymore, but you may still use the legacy jQuery based
-version. It needs to be documented.
