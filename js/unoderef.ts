@@ -4,9 +4,9 @@
 namespace UNodeRef {
 
     export const DATA_BUNDLES = "data-allowed-bundles";
-    export const DATA_ITEM_BUNDLE = "data-bundle";
-    export const DATA_ITEM_ID = "data-id";
-    export const DATA_ITEM_TYPE = "data-type";
+    export const DATA_ITEM_BUNDLE = "data-item-bundle";
+    export const DATA_ITEM_ID = "data-item-id";
+    export const DATA_ITEM_TYPE = "data-item-type";
     export const SELECTOR_SOURCES = "[data-layout-source=\"1\"]";
     export const SELECTOR_WIDGET = ".unoderef-items";
 
@@ -18,6 +18,7 @@ namespace UNodeRef {
         allowedBundles: string[] | null;
         container: Element;
         drake: dragula.Drake;
+        isMultiple: boolean = false;
         valueInput: HTMLInputElement;
 
         /**
@@ -25,6 +26,7 @@ namespace UNodeRef {
          */
         constructor(container: Element) {
             this.container = container;
+            this.isMultiple = "1" === container.getAttribute("data-multiple");
 
             // Value element is always a sibling, find it
             if (!this.container.parentElement) {
@@ -113,8 +115,11 @@ namespace UNodeRef {
         cloneItem(element: Element): Element {
             const newElement = document.createElement('div');
             newElement.className = 'unoderef-item';
-            newElement.setAttribute(DATA_ITEM_TYPE, <string>element.getAttribute(DATA_ITEM_TYPE));
-            newElement.setAttribute(DATA_ITEM_BUNDLE, <string>element.getAttribute(DATA_ITEM_BUNDLE));
+            for (let attribute of [DATA_ITEM_TYPE, DATA_ITEM_ID, DATA_ITEM_BUNDLE]) {
+                if (element.hasAttribute(attribute)) {
+                    newElement.setAttribute(attribute, <string>element.getAttribute(attribute));
+                }
+            }
 
             const innerClone = <Element>element.cloneNode(true);
             innerClone.removeAttribute('class');
@@ -177,13 +182,13 @@ namespace UNodeRef {
             direction: 'horizontal'
         });
 
-        if (!widget.container.getAttribute('data-multiple')) {
+        if (widget.isMultiple) {
             widget.drake.on('drop', function(element: Element) {
-                widget.removeAllItems();
                 widget.addItem(element);
             });
         } else {
             widget.drake.on('drop', function(element: Element) {
+                widget.removeAllItems();
                 widget.addItem(element);
             });
         }

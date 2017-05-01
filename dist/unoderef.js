@@ -18,14 +18,16 @@ Drupal.behaviors.unoderefDragula = {
 var UNodeRef;
 (function (UNodeRef) {
     UNodeRef.DATA_BUNDLES = "data-allowed-bundles";
-    UNodeRef.DATA_ITEM_BUNDLE = "data-bundle";
-    UNodeRef.DATA_ITEM_ID = "data-id";
-    UNodeRef.DATA_ITEM_TYPE = "data-type";
+    UNodeRef.DATA_ITEM_BUNDLE = "data-item-bundle";
+    UNodeRef.DATA_ITEM_ID = "data-item-id";
+    UNodeRef.DATA_ITEM_TYPE = "data-item-type";
     UNodeRef.SELECTOR_SOURCES = "[data-layout-source=\"1\"]";
     UNodeRef.SELECTOR_WIDGET = ".unoderef-items";
     var Widget = (function () {
         function Widget(container) {
+            this.isMultiple = false;
             this.container = container;
+            this.isMultiple = "1" === container.getAttribute("data-multiple");
             if (!this.container.parentElement) {
                 throw "Cannot find parent container";
             }
@@ -93,8 +95,12 @@ var UNodeRef;
             var _this = this;
             var newElement = document.createElement('div');
             newElement.className = 'unoderef-item';
-            newElement.setAttribute(UNodeRef.DATA_ITEM_TYPE, element.getAttribute(UNodeRef.DATA_ITEM_TYPE));
-            newElement.setAttribute(UNodeRef.DATA_ITEM_BUNDLE, element.getAttribute(UNodeRef.DATA_ITEM_BUNDLE));
+            for (var _i = 0, _a = [UNodeRef.DATA_ITEM_TYPE, UNodeRef.DATA_ITEM_ID, UNodeRef.DATA_ITEM_BUNDLE]; _i < _a.length; _i++) {
+                var attribute = _a[_i];
+                if (element.hasAttribute(attribute)) {
+                    newElement.setAttribute(attribute, element.getAttribute(attribute));
+                }
+            }
             var innerClone = element.cloneNode(true);
             innerClone.removeAttribute('class');
             newElement.appendChild(innerClone);
@@ -130,14 +136,14 @@ var UNodeRef;
             removeOnSpill: false,
             direction: 'horizontal'
         });
-        if (!widget.container.getAttribute('data-multiple')) {
+        if (widget.isMultiple) {
             widget.drake.on('drop', function (element) {
-                widget.removeAllItems();
                 widget.addItem(element);
             });
         }
         else {
             widget.drake.on('drop', function (element) {
+                widget.removeAllItems();
                 widget.addItem(element);
             });
         }
