@@ -1,22 +1,22 @@
 {
-    "name" : "makinacorpus/drupal-unoderef",
-    "type" : "drupal-module",
-    "description" : "Handle nodereferences with drop areas as widgets",
-    "homepage" : "http://github.com/makinacorpus/drupal-unoderef",
-    "license" : "GPL-2.0",
-    "authors" : [
+    "name": "makinacorpus/drupal-unoderef",
+    "type": "drupal-module",
+    "description": "Handle nodereferences with drop areas as widgets",
+    "homepage": "http://github.com/makinacorpus/drupal-unoderef",
+    "license": "GPL-2.0",
+    "authors": [
         {
-            "name" : "Sébastien Corbin",
-            "email" : "sebastien.corbin@makina-corpus.com"
+            "name": "Sébastien Corbin",
+            "email": "sebastien.corbin@makina-corpus.com"
         },
         {
-            "name" : "Makina Corpus",
-            "homepage" : "http://makina-corpus.com"
+            "name": "Makina Corpus",
+            "homepage": "http://makina-corpus.com"
         }
     ],
-    "minimum-stability" : "dev",
-    "prefer-stable" : true,
-    "require" : {
-        "makinacorpus/drupal-dragula" : "^1"
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "makinacorpus/drupal-dragula": "^1"
     }
 }

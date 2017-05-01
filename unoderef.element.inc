@@ -4,7 +4,6 @@
  * Implements hook_element_info().
  */
 function unoderef_element_info() {
-  $useDragula = module_exists('dragula') && !variable_get('unoderef_use_jquery');
   return [
     // Please note that this will handle only nodes dropped with data-nid
     // and data-bundle attribute, and should be used only this way.
@@ -14,7 +13,7 @@ function unoderef_element_info() {
       '#multiple'       => FALSE,
       '#input'          => TRUE,
       '#value_callback' => 'unoderef_element_value',
-      '#attached'       => ['library' => [['unoderef', $useDragula ? 'unoderef-dragula' : 'unoderef']]],
+      '#attached'       => ['library' => [['unoderef', 'unoderef']]],
     ],
   ];
 }
@@ -63,16 +62,10 @@ function unoderef_element_process($element) {
     $nodes = node_load_multiple($values);
     $views = node_view_multiple($nodes, $element['#view_mode']);
 
-    $useDragula = module_exists('dragula') && !variable_get('unoderef_use_jquery');
     foreach ($values as $index => $nid) {
       // Do not alter this markup, it is also built for javascript.
-      if ($useDragula) {
-        $prefix = '<div data-item-type="node" data-item-id="' . $nid . '">';
-      } else {
-        $prefix = '<div class="unoderef-item" data-nid="' . $nid . '"><span class="glyphicon glyphicon-remove"></span>';
-      }
       $element['items'][$index] = [
-        '#prefix' => $prefix,
+        '#prefix' => '<div data-item-type="node" data-item-id="' . $nid . '">',
         '#suffix' => '</div>',
         'content' => $views['nodes'][$nid],
       ];

@@ -24,43 +24,18 @@ function unoderef_field_info() {
  * Implements hook_library().
  */
 function unoderef_library() {
-  $libraries = [];
-
-  // Legacy version, using jQuery.ui.(droppable,sortable).
-  $libraries['unoderef'] = [
-    'title'        => 'µNode Reference',
-    'version'      => '0.1',
-    'js'           => [
-      drupal_get_path('module', 'unoderef') . '/js/unoderef.jquery.ui.js' => [],
-    ],
-    'css'          => [
-      drupal_get_path('module', 'unoderef') . '/unoderef.css' => [
-        'type'  => 'file',
-        'media' => 'screen',
+  return [
+    'unoderef' => [
+      'title'        => 'µNode Reference',
+      'version'      => '0.1',
+      'js'           => [drupal_get_path('module', 'unoderef') . '/dist/unoderef.js' => []],
+      'css'          => [
+        drupal_get_path('module', 'unoderef') . '/unoderef.css' => [
+          'type'  => 'file',
+          'media' => 'screen',
+        ],
       ],
-    ],
-    'dependencies' => [
-      ['system', 'jquery.once'],
-      ['system', 'ui.sortable'],
-      ['system', 'ui.droppable'],
+      'dependencies' => [['dragula', 'dragula']],
     ],
   ];
-
-  // Dragula based version.
-  $libraries['unoderef-dragula'] = [
-    'title'        => 'µNode Reference',
-    'version'      => '0.1',
-    'js'           => [
-      drupal_get_path('module', 'unoderef') . '/js/unoderef.dragula.js' => [],
-    ],
-    'css'          => [
-      drupal_get_path('module', 'unoderef') . '/unoderef.css' => [
-        'type'  => 'file',
-        'media' => 'screen',
-      ],
-    ],
-    'dependencies' => [['dragula', 'dragula']],
-  ];
-
-  return $libraries;
 }
