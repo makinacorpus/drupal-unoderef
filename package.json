@@ -1,11 +1,12 @@
 {
     "name": "drupal-unoderef",
     "version": "2.0.0-alpha1",
+    "private": true,
     "main": "js/index.ts",
     "repository": "https://github.com/makinacorpus/drupal-unoderef.git",
     "author": "Makina Corpus",
     "license": "GPL-2",
-    "dependencies": {
+    "devDependencies": {
         "@types/dragula": "^2.1.30",
         "@types/jquery": "^2.0.41"
     }
