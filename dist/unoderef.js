@@ -105,7 +105,7 @@ var UNodeRef;
             innerClone.removeAttribute('class');
             newElement.appendChild(innerClone);
             var closeButton = document.createElement('span');
-            closeButton.setAttribute("class", "glyphicon glyphicon-remove");
+            closeButton.setAttribute("class", "fa fa-times");
             newElement.appendChild(closeButton);
             closeButton.onclick = function () {
                 if (newElement.parentElement) {

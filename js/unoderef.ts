@@ -127,7 +127,7 @@ namespace UNodeRef {
 
             // Create close button
             const closeButton = document.createElement('span');
-            closeButton.setAttribute("class", "glyphicon glyphicon-remove");
+            closeButton.setAttribute("class", "fa fa-times");
             newElement.appendChild(closeButton);
 
             // Attach remove button behavior
