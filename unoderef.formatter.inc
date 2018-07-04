@@ -82,7 +82,7 @@ function unoderef_field_formatter_settings_summary($field, $instance, $view_mode
  */
 function unoderef_field_formatter_view_filter_nodes(array $nodes, array $settings = []) {
 
-  $access_check = $settings['security'] ?? false;
+  $access_check = $settings['access_check'] ?? false;
   $published_only = $settings['published_only'] ?? false;
 
   // Filter result accordingly to formatter configuration
