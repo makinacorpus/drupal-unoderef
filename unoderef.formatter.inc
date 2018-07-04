@@ -10,14 +10,22 @@ function unoderef_field_formatter_info() {
       'label'       => t('Default'),
       'field types' => ['unoderef'],
       'settings'    => [
-        'view_mode' => 'teaser',
+        // Next two options defaults should be true instead, but we need to keep
+        // it to false for backward compatibility until next major release.
+        'access_check'    => false,
+        'published_only'  => false,
+        'view_mode'       => 'teaser',
       ],
     ],
     'unoderef_first' => [
       'label'       => t('Default'),
       'field types' => ['unoderef'],
       'settings'    => [
-        'view_mode' => 'teaser',
+        // Next two options defaults should be true instead, but we need to keep
+        // it to false for backward compatibility until next major release.
+        'access_check'    => false,
+        'published_only'  => false,
+        'view_mode'       => 'teaser',
       ],
     ],
   ];
@@ -31,6 +39,16 @@ function unoderef_field_formatter_settings_form($field, $instance, $view_mode, $
   $settings = $display['settings'];
 
   $element = [];
+  $element['access_check'] = [
+    '#title'         => t('Use node access'),
+    '#type'          => 'checkbox',
+    '#default_value' => $settings['access_check'],
+  ];
+  $element['published_only'] = [
+    '#title'         => t('Only published content (extra access check)'),
+    '#type'          => 'checkbox',
+    '#default_value' => $settings['published_only'],
+  ];
   $element['view_mode'] = [
     '#title'         => t('View mode'),
     '#type'          => 'select',
@@ -54,38 +72,65 @@ function unoderef_field_formatter_settings_summary($field, $instance, $view_mode
 }
 
 /**
+ * Load and filter nodes from the given field item, using the given formatter
+ * settings (settings from 'unoderef' or 'unoderef_first' formatters).
+ *
+ * @param \stdClass[] $item
+ * @param array $settings
+ *
+ * @return \stdClass[]
+ */
+function unoderef_field_formatter_view_filter_nodes(array $nodes, array $settings = []) {
+
+  $access_check = $settings['security'] ?? false;
+  $published_only = $settings['published_only'] ?? false;
+
+  // Filter result accordingly to formatter configuration
+  if ($published_only || $access_check) {
+    foreach ($nodes as $index => $node) {
+      if (
+        ($published_only && !$node->status) || // Node is published
+        ($access_check && !node_access('view', $node)) // User can see the node in current context
+      ){
+        unset($nodes[$index]);
+      }
+    }
+  }
+
+  return array_filter($nodes);
+}
+
+/**
  * Implements hook_field_formatter_view().
  */
 function unoderef_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = [];
   $settings = $display['settings'];
-  $view_mode = $settings['view_mode'];
+  $view_mode = $settings['view_mode'] ?? 'teaser';
+  $first_only = 'unoderef_first' === $display['type'];
 
-  switch ($display['type']) {
+  // Collect items to display
+  $nids = [];
+  foreach ($items as $item) {
+    $nids[] = $item['nid'];
+  }
+  if (!$nids) {
+    return $element;
+  }
 
-    case 'unoderef':
-      // Collect items to display
-      $nids = [];
-      foreach ($items as $item) {
-        $nids[] = $item['nid'];
-      }
-      if (count($nids)) {
-        $nodes = node_load_multiple($nids);
-        $views = node_view_multiple($nodes, $view_mode);
-        foreach ($nids as $delta => $nid) {
-          $element[$delta] = $views['nodes'][$nid];
+  // Process after filtering
+  if ($nodes = unoderef_field_formatter_view_filter_nodes(node_load_multiple($nids), $settings)) {
+    if ($first_only) { // unoderef_first
+      $first = array_shift($nodes);
+      $element[0] = node_view($first, $view_mode);
+    } else { // unoderef
+      $delta = -1;
+      foreach (node_view_multiple($nodes, $view_mode)['nodes'] as $view) {
+        if (is_array($view)) {
+          $element[$delta++] = $view;
         }
       }
-      break;
-
-    case 'unoderef_first':
-      // Collect items to display
-      if (isset($items[0]['nid'])) {
-        if ($node = node_load($items[0]['nid'])) {
-          $element[0] = node_view($node, $view_mode);
-        }
-      }
-      break;
+    }
   }
 
   return $element;
